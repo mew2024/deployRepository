@@ -61,7 +61,7 @@ class UserLoginView2(LoginView):
     
 class UserLogoutView2(LogoutView):
     next_page = reverse_lazy('accounts:home')
-    http_method_names = ['post']
+    template_name = None
     
     
 class UserView(LoginRequiredMixin, TemplateView):

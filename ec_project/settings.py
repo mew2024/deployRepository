@@ -24,9 +24,9 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = 'django-insecure-%5=0zzxpob!o^m#^c737i@p3w!gdkppy-(n-(&z6$72%1a0^0g'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['mew2024.pythonanywhere.com']
 
 
 # Application definition
@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'ec_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+         'NAME': '/home/mew2024/ECSITE_PROJECT/ec_project/db.sqlite3',
     }
 }
 
@@ -132,3 +132,5 @@ LOGIN_REDIRECT_URL = '/accounts/user/'  # ログイン後にユーザーペー�
 SESSION_COOKIE_AGE = 60
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+LOGIN_URL = '/accounts/home/'
