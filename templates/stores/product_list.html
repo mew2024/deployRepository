@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="col-10 offset-1">
+    <h2>商品一覧</h2>
+                {% if is_paginated %}
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}">前へ</a>
+                    {% endif %}
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            {{ num }}
+                        {% else %}
+                            <a href="?page={{ num }}">{{ num }}</a>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">次へ</a>
+                    {% endif %}
+                {% endif %}
+                <form method="get">
+                    <p>種類: <input type="text" name="product_type_name" value="{{ product_type_name }}"></input></p>
+                    <p>商品名: <input type="text" name="product_name" value="{{ product_name }}"></p>
+                    <p>サイズ:
+                        <select name="sizes">
+                                <option value="">全て</option>
+                            {% for size in all_sizes %}
+                                <option value="{{ size.full_name }}" {% if sizes == size.full_name %}selected{% endif %}>
+                                    {{ size }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </p>
+                    <input type="submit" value="実行"></input>
+
+               
+
+                    <p>メーカー:
+                    <select name="manufacturer_name">
+                        <option value="">全て</option>
+                        {% for manufacturer in all_manufacturers %}
+                            <option value="{{ manufacturer.name }}" {% if manufacturer.name == manufacturer_name %}selected{% endif %}>{{ manufacturer.name }}</option>
+                        {% endfor %}
+                    </select>
+                    </p>
+
+                    <p>カテゴリー:
+                    <select name="category_name">
+                        <option value="">全て</option>
+                        {% for category in all_categories %}
+                            <option value="{{ category.name }}" {% if category.name == category_name %}selected{% endif %}>{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                    </p>
+
+                    <input type="submit" value="絞り込み" class="btn btn-primary">
+
+
+                </form>
+
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <td>商品名</td>
+                <td>在庫数</td>
+                <td>種類</td>
+                <td>メーカー</td>
+                <td>カテゴリー</td>
+                <td>サイズ</td>
+                <td>値段</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+                <tr>
+                    <td><a href="{% url 'stores:product_detail' pk=product.id %}">{{ product.name }}</a></td>
+                    <td>{{ product.stock }}個</td>
+                    <td>{{ product.product_type.name }}</td>
+                    <td>{{ product.manufacturer.name }}</td>
+                    <td>{{ product.category.name|default:"-" }}</td>
+                    <td>
+                        {% for size in product.sizes.all %}
+                            {{ size }}{% if not forloop.last %}, {% endif %}
+                        {% empty %}
+                            -
+                        {% endfor %}
+                    </td>
+
+                    <td>{{ product.price }}円</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
